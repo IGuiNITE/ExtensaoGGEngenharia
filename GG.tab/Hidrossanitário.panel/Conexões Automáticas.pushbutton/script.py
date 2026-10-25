@@ -10,15 +10,17 @@ import op1_lavatorio_caixa
 import op2_caixa_coletor
 import op3_direto_coletor
 import op4_hidraulico
+import op5_ventilacao
 
 doc = revit.doc
 uidoc = revit.uidoc
 
 OPCOES = {
-    u"1. Lavatório → Caixa sifonada": op1_lavatorio_caixa,
-    u"2. Caixa sifonada → Coletor (Y a 45°)": op2_caixa_coletor,
-    u"3. Aparelho direto → Coletor": op3_direto_coletor,
+    u"1. Lavatório para Caixa sifonada": op1_lavatorio_caixa,
+    u"2. Caixa sifonada para Coletor": op2_caixa_coletor,
+    u"3. Aparelho direto para Coletor": op3_direto_coletor,
     u"4. Ligações Hidráulica": op4_hidraulico,
+    u"5. Ligações Ventilação": op5_ventilacao,
 }
 
 def main():

@@ -146,7 +146,7 @@ def executar(doc, uidoc):
             if move1.GetLength() > mm(0.5):
                 with revit.Transaction(u"Alinhar caixa"):
                     DB.ElementTransformUtils.MoveElement(doc, caixa.Id, move1)
-                doc.Regenerate()
+                    doc.Regenerate()
                 log(u"Caixa movida **{:.1f} mm**.".format(to_mm(move1.GetLength())))
                 
             # Atualiza rigorosamente as referências (previne erro de Object is Invalid)

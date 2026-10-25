@@ -17,7 +17,6 @@ def ramal_coletor(caixa, alvo, outlet_id, rota, sistema_id, nivel_id, tipo_id, d
         doc.Regenerate()
         log(u"Caixa ajustada **{:+.1f} mm** na altura.".format(to_mm(dz)))
         
-    # Atualiza a referência da caixa após mover
     caixa_fresca = doc.GetElement(caixa.Id)
     outlet = connector_by_id(caixa_fresca, outlet_id)
     dia = outlet.Radius * 2.0
