@@ -14,7 +14,7 @@ def ramal_coletor(caixa, alvo, outlet_id, rota, sistema_id, nivel_id, tipo_id, d
     if abs(dz) > mm(0.01):
         with revit.Transaction(u"Ajustar altura da caixa"):
             DB.ElementTransformUtils.MoveElement(doc, caixa.Id, DB.XYZ(0, 0, dz))
-        doc.Regenerate()
+            doc.Regenerate()
         log(u"Caixa ajustada **{:+.1f} mm** na altura.".format(to_mm(dz)))
         
     caixa_fresca = doc.GetElement(caixa.Id)
@@ -60,8 +60,8 @@ def ramal_coletor(caixa, alvo, outlet_id, rota, sistema_id, nivel_id, tipo_id, d
 
 def executar(doc, uidoc):
     try:
-        caixa = doc.GetElement(uidoc.Selection.PickObject(UI.Selection.ObjectType.Element, u"1/2: Selecione a caixa sifonada"))
-        alvo = doc.GetElement(uidoc.Selection.PickObject(UI.Selection.ObjectType.Element, u"2/2: Selecione o coletor"))
+        alvo = doc.GetElement(uidoc.Selection.PickObject(UI.Selection.ObjectType.Element, u"1/2: Selecione o coletor reto"))
+        caixa = doc.GetElement(uidoc.Selection.PickObject(UI.Selection.ObjectType.Element, u"2/2: Selecione a caixa sifonada"))
         
         curve = getattr(alvo.Location, "Curve", None)
         if not isinstance(curve, DB.Line):
