@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 desktop.ini
 Thumbs.db
+# Bancos de dados SQLite (gerados automaticamente pelo script)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
