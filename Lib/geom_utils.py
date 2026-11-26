@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import math
 from pyrevit import DB
+import config_modelo
 
 # CONSTANTES GLOBAIS
 DECLIVE = 0.02
-NOME_TIPO_RAMAL = u"PVC Esgoto Série Normal"
-NOME_SISTEMA = u"Esgoto Sanitário"
+NOME_TIPO_RAMAL = config_modelo.obter("TIPO_TUBO_ESGOTO", u"PVC Esgoto Série Normal")
+NOME_SISTEMA = config_modelo.obter("SISTEMA_ESGOTO", u"Esgoto Sanitário")
 TOL_45 = 3.0
 COMPRIMENTO_GUIA = 1000 / 304.8
 QUEDA_MINIMA = 80 / 304.8

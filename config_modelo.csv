@@ -1,0 +1,27 @@
+chave;valor;descricao
+TAG_ESGOTO_SETA;Anotação Tubos 4 : DN + Seta 1-1;Etiqueta de diametro com seta para tubos de esgoto (Familia : Tipo)
+TAG_ESGOTO_INCLINACAO;Anotação Tubos 3 : Inclinação;Etiqueta de inclinacao para tubos de esgoto (Familia : Tipo)
+TAG_ESGOTO_UHC;Anotação Tubos 3 : UHC;Etiqueta de UHC para tubos de esgoto (Familia : Tipo)
+TAG_ESGOTO_COLUNA;Anotacao_Coluna : Coluna;Simbolo de coluna para tubos verticais de esgoto (Familia : Tipo)
+PALAVRAS_VENTILACAO;vent;Palavras-chave no sistema para identificar tubos de ventilacao (separadas por virgula)
+TAG_AGUA_DIAMETRO;Anotação Tubos 3 : DN;Etiqueta principal de diametro para agua fria (Familia : Tipo)
+TAG_AGUA_DIAMETRO_ALT;Anotacao_Tubo Inicial : Diâmetro;Etiqueta alternativa de diametro para agua fria (Familia : Tipo)
+PALAVRAS_AGUA;agua fria, cold water;Palavras-chave no sistema para identificar tubos de agua fria (separadas por virgula)
+NOME_TIPO_COTA;;Nome do tipo de cota para agua fria (deixe vazio para usar o padrao do projeto)
+TIPO_TUBO_ESGOTO;PVC Esgoto Série Normal;Nome do tipo de tubo usado nos ramais de esgoto
+SISTEMA_ESGOTO;Esgoto Sanitário;Nome do tipo de sistema de esgoto sanitario
+SISTEMA_AGUA_FRIA;Água Fria Potável;Nome do tipo de sistema de agua fria
+FAMILIA_REGISTRO_GERAL;RG_Registro de Gaveta c/ PVC;Nome da familia do registro de gaveta (registro geral)
+FAMILIA_REGISTRO_PRESSAO;RP_Registro de Pressão C/ PVC;Nome da familia do registro de pressao (chuveiro)
+PARAM_UNIDADES_CARGA;Unidades de carga;Nome do parametro de leitura das unidades de carga nos tubos
+PARAM_COMPRIMENTO_EQ;Comprimento Equivalente;Parametro gravado pelo calculo hidraulico (m)
+PARAM_DIFERENCA_COTA;Diferença de Cota (m);Parametro gravado pelo calculo hidraulico (m)
+PARAM_VAZAO;Vazão (L/s);Parametro gravado pelo calculo hidraulico (L/s)
+PARAM_VELOCIDADE;Velocidade (m/s);Parametro gravado pelo calculo hidraulico (m/s)
+PARAM_PERDA_UNITARIA;Perda de Carga Unitária;Parametro gravado pelo calculo hidraulico (mca/m)
+PARAM_PERDA_TUBULACAO;Perda de Carga Tubulação;Parametro gravado pelo calculo hidraulico (mca)
+PARAM_PERDA_LOCALIZADA;Perda de Carga Localizada;Parametro gravado pelo calculo hidraulico (mca)
+PARAM_PERDA_TOTAL;Perda de Carga Total;Parametro gravado pelo calculo hidraulico (mca)
+PARAM_PRESSAO_DISP;Pressão Disponivel;Parametro gravado pelo calculo hidraulico (mca no inicio do tubo)
+PARAM_PRESSAO_RESIDUAL;Pressão Disponivel Residual;Parametro gravado pelo calculo hidraulico (mca no fim do tubo)
+PARAM_PRESSAO_MCA;Pressão (mca);Parametro compartilhado gravado pelo calculo hidraulico (para etiqueta)

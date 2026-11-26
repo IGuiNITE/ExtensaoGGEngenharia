@@ -163,7 +163,7 @@ O JSON original e a geometria do Revit **não são modificados** por este comand
 
 ## Pré-requisitos do modelo
 
-Os comandos procuram famílias, tipos e sistemas pelo **nome**. Se o projeto usar nomes diferentes, ajuste as constantes no início dos arquivos.
+Os comandos procuram famílias, tipos, sistemas e parâmetros pelo **nome**. Se o projeto usar nomes diferentes, **não é necessário editar código Python**: basta abrir o arquivo [`config_modelo.csv`](config_modelo.csv) na raiz da extensão (no Excel ou em um editor de texto) e alterar os valores da coluna `valor`.
 
 | Comando | Precisa existir no projeto |
 |---|---|
@@ -192,6 +192,7 @@ GG.extension/
 │           ├── AjusteDePontos.pushbutton/
 │           └── TaludeDeToposolid.pushbutton/
 ├── Lib/                                         # código compartilhado entre os botões
+│   ├── config_modelo.py                         # lê config_modelo.csv (compatível com IronPython e CPython 3)
 │   ├── geom_utils.py                            # geometria 2D, constantes de esgoto
 │   ├── revit_mep.py                             # conectores, tubos, curvas, junções Y
 │   ├── ui_utils.py                              # seleção de rota, escolha de saídas
@@ -199,6 +200,7 @@ GG.extension/
 │   └── data/
 │       ├── criar_banco.py                       # cria e popula hidraulica.db
 │       └── hidraulica.db                        # gerado automaticamente (ignorado pelo Git)
+├── config_modelo.csv                            # nomes de famílias, etiquetas, sistemas e parâmetros
 └── .gitignore
 ```
 
@@ -208,7 +210,8 @@ Cada botão com várias opções segue o mesmo padrão: o `script.py` mostra o m
 
 ## Configuração
 
-Os parâmetros ficam em constantes no topo de cada arquivo. As principais:
+- **Nomes de famílias, etiquetas, sistemas e parâmetros:** edite diretamente o arquivo [`config_modelo.csv`](config_modelo.csv) (separado por `;`, compatível com Excel).
+- **Parâmetros numéricos e de comportamento:** ficam em constantes no topo de cada arquivo. Os principais:
 
 **`op2_agua_fria.py`**
 
