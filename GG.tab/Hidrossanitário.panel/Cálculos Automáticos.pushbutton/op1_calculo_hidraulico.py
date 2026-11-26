@@ -17,26 +17,27 @@ from geom_utils import *
 from revit_mep import *
 from ui_utils import *
 from db_hidraulica import carregar_tabela
+import config_modelo
 
 # ----------------------------------------------------------------------------
 # CONFIGURAÇÃO
 # ----------------------------------------------------------------------------
-P_UC = u"Unidades de carga"          # leitura
+P_UC = config_modelo.obter("PARAM_UNIDADES_CARGA", u"Unidades de carga")          # leitura
 
 # Parâmetros de gravação (já existem nos tubos do modelo).
 # Conversão de unidade é feita pelo tipo do parâmetro (comprimento, vazão, velocidade, pressão).
 PARAMS = {
-    "leq":  u"Comprimento Equivalente",          # m
-    "dz":   u"Diferença de Cota (m)",            # m
-    "q":    u"Vazão (L/s)",                      # L/s
-    "v":    u"Velocidade (m/s)",                 # m/s
-    "j":    u"Perda de Carga Unitária",          # mca/m (gravado como pressão: mca x 9,80665 = kPa)
-    "htub": u"Perda de Carga Tubulação",         # mca
-    "hloc": u"Perda de Carga Localizada",        # mca
-    "htot": u"Perda de Carga Total",             # mca
-    "pin":  u"Pressão Disponivel",               # mca (início do tubo)
-    "pout": u"Pressão Disponivel Residual",      # mca (fim do tubo)
-    "pmca": u"Pressão (mca)",                    # mca, tipo Número (compartilhado, para etiqueta): pressão no fim do tubo
+    "leq":  config_modelo.obter("PARAM_COMPRIMENTO_EQ", u"Comprimento Equivalente"),          # m
+    "dz":   config_modelo.obter("PARAM_DIFERENCA_COTA", u"Diferença de Cota (m)"),            # m
+    "q":    config_modelo.obter("PARAM_VAZAO", u"Vazão (L/s)"),                      # L/s
+    "v":    config_modelo.obter("PARAM_VELOCIDADE", u"Velocidade (m/s)"),                 # m/s
+    "j":    config_modelo.obter("PARAM_PERDA_UNITARIA", u"Perda de Carga Unitária"),          # mca/m (gravado como pressão: mca x 9,80665 = kPa)
+    "htub": config_modelo.obter("PARAM_PERDA_TUBULACAO", u"Perda de Carga Tubulação"),         # mca
+    "hloc": config_modelo.obter("PARAM_PERDA_LOCALIZADA", u"Perda de Carga Localizada"),        # mca
+    "htot": config_modelo.obter("PARAM_PERDA_TOTAL", u"Perda de Carga Total"),             # mca
+    "pin":  config_modelo.obter("PARAM_PRESSAO_DISP", u"Pressão Disponivel"),               # mca (início do tubo)
+    "pout": config_modelo.obter("PARAM_PRESSAO_RESIDUAL", u"Pressão Disponivel Residual"),      # mca (fim do tubo)
+    "pmca": config_modelo.obter("PARAM_PRESSAO_MCA", u"Pressão (mca)"),                    # mca, tipo Número (compartilhado, para etiqueta): pressão no fim do tubo
 }
 COMPRIMENTOS = ("leq", "dz")
 
@@ -159,19 +160,22 @@ def _para_interno(p, chave, valor):
 
 def gravar(pipe, chave, valor, faltando):
     nome = PARAMS[chave]
-    p = pipe.LookupParameter(nome)
-    if p is None or p.IsReadOnly:
+    # GetParameters devolve TODOS os parâmetros com esse nome (ex.: um compartilhado e um de projeto
+    # duplicado). LookupParameter devolveria só o primeiro e o outro ficaria vazio.
+    alvos = [p for p in pipe.GetParameters(nome) if not p.IsReadOnly]
+    if not alvos:
         faltando.add(nome)
         return
-    try:
-        if p.StorageType == DB.StorageType.String:
-            p.Set(u"{:.3f}".format(valor).replace(".", ","))
-        elif p.StorageType == DB.StorageType.Double:
-            p.Set(_para_interno(p, chave, valor))
-        else:
+    for p in alvos:
+        try:
+            if p.StorageType == DB.StorageType.String:
+                p.Set(u"{:.3f}".format(valor).replace(".", ","))
+            elif p.StorageType == DB.StorageType.Double:
+                p.Set(_para_interno(p, chave, valor))
+            else:
+                faltando.add(nome)
+        except Exception:
             faltando.add(nome)
-    except Exception:
-        faltando.add(nome)
 
 
 # ----------------------------------------------------------------------------

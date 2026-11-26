@@ -23,6 +23,7 @@ from Autodesk.Revit.DB import (
 )
 from Autodesk.Revit.DB.Plumbing import Pipe
 from pyrevit import forms, script
+import config_modelo
 
 try:
     import unicodedata
@@ -34,15 +35,15 @@ uidoc = None   # definidos em executar()
 doc = None
 
 # ---------- CONFIGURAÇÕES ----------
-# Tipos de etiqueta de tubo: (nome da família, nome do tipo)
-TAG_SETA = (u"Anotação Tubos 4", u"DN + Seta 1-1")
-TAG_INCLINACAO = (u"Anotação Tubos 3", u"Inclinação")
-TAG_UHC = (u"Anotação Tubos 3", u"UHC")
-TAG_COLUNA = (u"Anotacao_Coluna", u"Coluna")
+# Tipos de etiqueta de tubo: (nome da família, nome do tipo) — editáveis em config_modelo.csv
+TAG_SETA = config_modelo.obter_tupla("TAG_ESGOTO_SETA", (u"Anotação Tubos 4", u"DN + Seta 1-1"))
+TAG_INCLINACAO = config_modelo.obter_tupla("TAG_ESGOTO_INCLINACAO", (u"Anotação Tubos 3", u"Inclinação"))
+TAG_UHC = config_modelo.obter_tupla("TAG_ESGOTO_UHC", (u"Anotação Tubos 3", u"UHC"))
+TAG_COLUNA = config_modelo.obter_tupla("TAG_ESGOTO_COLUNA", (u"Anotacao_Coluna", u"Coluna"))
 
 # Um tubo é de ventilação se a classificação ou o tipo de sistema
 # contiver alguma destas palavras (sem diferenciar maiúsculas)
-PALAVRAS_VENTILACAO = (u"vent",)
+PALAVRAS_VENTILACAO = config_modelo.obter_lista("PALAVRAS_VENTILACAO", (u"vent",))
 
 # Coluna: tubos verticais mais longos que isso recebem o símbolo de coluna
 COLUNA_ALTURA_MIN_M = 2.0

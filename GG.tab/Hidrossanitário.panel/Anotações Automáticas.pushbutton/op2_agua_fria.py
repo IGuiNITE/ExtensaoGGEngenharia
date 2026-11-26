@@ -35,15 +35,16 @@ from Autodesk.Revit.DB.Plumbing import Pipe
 from Autodesk.Revit.UI.Selection import ObjectType, ISelectionFilter
 from Autodesk.Revit.Exceptions import OperationCanceledException
 from pyrevit import forms, script
+import config_modelo
 
 uidoc = None
 doc = None
 
 # ---------- CONFIGURACOES ----------
-PALAVRAS_AGUA = (u"agua fria", u"cold water")
-TAG_DIAMETRO = (u"Anota\u00e7\u00e3o Tubos 3", u"DN")
-TAG_DIAMETRO_ALT = (u"Anotacao_Tubo Inicial", u"Di\u00e2metro")
-NOME_TIPO_COTA = None
+PALAVRAS_AGUA = config_modelo.obter_lista("PALAVRAS_AGUA", (u"agua fria", u"cold water"))
+TAG_DIAMETRO = config_modelo.obter_tupla("TAG_AGUA_DIAMETRO", (u"Anota\u00e7\u00e3o Tubos 3", u"DN"))
+TAG_DIAMETRO_ALT = config_modelo.obter_tupla("TAG_AGUA_DIAMETRO_ALT", (u"Anotacao_Tubo Inicial", u"Di\u00e2metro"))
+NOME_TIPO_COTA = config_modelo.obter_opcional("NOME_TIPO_COTA", None)
 
 COTA_OFFSET_MM = 45.0
 TOL_POS_CM = 1.0
