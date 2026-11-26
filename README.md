@@ -3,6 +3,7 @@
 Extensão para o [pyRevit](https://github.com/pyrevitlabs/pyRevit) que automatiza tarefas repetitivas de **arquitetura**, **instalações hidrossanitárias** e **topografia** no Autodesk Revit: cotas de paredes, anotação de tubos, conexões de esgoto, água fria e ventilação, cálculo hidráulico e talude de terrenos.
 
 Autor: **Guilherme Geraldo da Silva**
+Contribuidor: **Antigravity (Google DeepMind)** — apoio em desenvolvimento, auditoria e documentação
 
 ---
 
@@ -55,7 +56,7 @@ Os botões com mais de uma rotina (Anotar, Conectar, Cálculos) abrem um menu pa
 
    ```bash
    cd "C:\Revit\Plugins"
-   git clone https://github.com/<seu-usuario>/<seu-repositorio>.git GG.extension
+   git clone https://github.com/IGuiNITE/ExtensaoGGEngenharia.git GG.extension
    ```
 
 3. No Revit, abra **pyRevit → Settings → Custom Extension Directories** e adicione a pasta **que contém** `GG.extension` (no exemplo, `C:\Revit\Plugins`).
@@ -241,3 +242,9 @@ Os parâmetros ficam em constantes no topo de cada arquivo. As principais:
 4. Envie: `git push origin minha-melhoria` e abra um Pull Request.
 
 Antes de enviar, teste o comando no Revit e confira que o `Reload` do pyRevit carrega a aba sem erros.
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a **GNU General Public License v3.0 (GPLv3)** — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
