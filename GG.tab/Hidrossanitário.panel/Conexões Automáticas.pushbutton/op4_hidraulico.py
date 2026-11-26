@@ -6,6 +6,7 @@ from pyrevit import DB, UI, forms, revit, script
 from geom_utils import *
 from revit_mep import *
 from ui_utils import *
+import config_modelo
 
 ALTURA_BAIXA = 1000 / 304.8
 ALTURA_ALTA = 1500 / 304.8
@@ -17,9 +18,9 @@ TOL_COINC = 40 / 304.8
 DESNIVEL_CANTO = 100 / 304.8    
 ALTURA_STUB = 200 / 304.8       
 COMPRIMENTO_TUBINHO = 14.1 / 304.8
-NOME_SISTEMA_AGUA = u"Água Fria Potável"
-FAMILIA_REGISTRO_GERAL = u"RG_Registro de Gaveta c/ PVC"
-FAMILIA_REGISTRO_PRESSAO = u"RP_Registro de Pressão C/ PVC"
+NOME_SISTEMA_AGUA = config_modelo.obter("SISTEMA_AGUA_FRIA", u"Água Fria Potável")
+FAMILIA_REGISTRO_GERAL = config_modelo.obter("FAMILIA_REGISTRO_GERAL", u"RG_Registro de Gaveta c/ PVC")
+FAMILIA_REGISTRO_PRESSAO = config_modelo.obter("FAMILIA_REGISTRO_PRESSAO", u"RP_Registro de Pressão C/ PVC")
 
 INVERTER_BUCHA = 0
 
