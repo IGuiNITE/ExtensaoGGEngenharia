@@ -3,37 +3,56 @@
 
 Compativel com IronPython 2.7 e CPython 3, sem dependencias externas.
 """
-import csv
+import io
 import os
 import sys
 
-_PY3 = sys.version_info[0] >= 3
 _EXT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _CSV_PATH = os.path.join(_EXT_DIR, "config_modelo.csv")
 _CACHE = None
 
 
-def _to_unicode(val):
-    if val is None:
-        return u""
-    if _PY3:
-        return str(val)
-    if isinstance(val, unicode):  # noqa: F821
-        return val
-    for enc in ("utf-8-sig", "utf-8", "cp1252", "latin-1"):
-        try:
-            return val.decode(enc)
-        except Exception:
-            pass
-    return val.decode("latin-1", "replace")
-
-
 def _detectar_delimitador(primeira_linha):
     if u";" in primeira_linha:
-        return ";"
+        return u";"
     if u"," in primeira_linha:
-        return ","
-    return ";"
+        return u","
+    return u";"
+
+
+def _parse_linha_csv(linha, delim):
+    """Faz o parse de uma linha CSV respeitando aspas duplas em Unicode."""
+    campos = []
+    atual = []
+    em_aspas = False
+    i = 0
+    n = len(linha)
+    while i < n:
+        ch = linha[i]
+        if ch == u'"':
+            if em_aspas and i + 1 < n and linha[i + 1] == u'"':
+                atual.append(u'"')
+                i += 2
+                continue
+            em_aspas = not em_aspas
+        elif ch == delim and not em_aspas:
+            campos.append(u"".join(atual))
+            atual = []
+        else:
+            atual.append(ch)
+        i += 1
+    campos.append(u"".join(atual))
+    return campos
+
+
+def _ler_texto_csv():
+    for enc in ("utf-8-sig", "cp1252", "latin-1"):
+        try:
+            with io.open(_CSV_PATH, "r", encoding=enc) as f:
+                return f.read()
+        except Exception:
+            continue
+    return None
 
 
 def _carregar_csv():
@@ -46,58 +65,31 @@ def _carregar_csv():
         _CACHE = dados
         return dados
 
-    if _PY3:
-        conteudo = None
-        for enc in ("utf-8-sig", "cp1252", "latin-1"):
-            try:
-                with open(_CSV_PATH, "r", encoding=enc, newline="") as f:
-                    conteudo = f.read()
-                break
-            except UnicodeDecodeError:
-                continue
-        if conteudo is None:
-            _CACHE = dados
-            return dados
+    conteudo = _ler_texto_csv()
+    if not conteudo:
+        _CACHE = dados
+        return dados
 
-        linhas = conteudo.splitlines()
-        if not linhas:
-            _CACHE = dados
-            return dados
-        delim = _detectar_delimitador(linhas[0])
-        reader = csv.reader(linhas, delimiter=delim)
-        cabecalho = True
-        for row in reader:
-            if not row or len(row) < 2:
-                continue
-            chave = row[0].strip()
-            if cabecalho and chave.lower() == "chave":
-                cabecalho = False
-                continue
+    linhas = conteudo.splitlines()
+    if not linhas:
+        _CACHE = dados
+        return dados
+
+    delim = _detectar_delimitador(linhas[0])
+    cabecalho = True
+    for linha in linhas:
+        if not linha.strip():
+            continue
+        row = _parse_linha_csv(linha, delim)
+        if len(row) < 2:
+            continue
+        chave = row[0].strip()
+        if cabecalho and chave.lower() == u"chave":
             cabecalho = False
-            if chave and not chave.startswith("#"):
-                dados[chave] = row[1].strip()
-    else:
-        with open(_CSV_PATH, "rb") as f:
-            bruto = f.read()
-        texto = _to_unicode(bruto)
-        linhas = texto.splitlines()
-        if not linhas:
-            _CACHE = dados
-            return dados
-        delim = _detectar_delimitador(linhas[0])
-        linhas_utf8 = [ln.encode("utf-8") for ln in linhas]
-        reader = csv.reader(linhas_utf8, delimiter=delim)
-        cabecalho = True
-        for row in reader:
-            if not row or len(row) < 2:
-                continue
-            chave = _to_unicode(row[0]).strip()
-            if cabecalho and chave.lower() == u"chave":
-                cabecalho = False
-                continue
-            cabecalho = False
-            if chave and not chave.startswith(u"#"):
-                dados[chave] = _to_unicode(row[1]).strip()
+            continue
+        cabecalho = False
+        if chave and not chave.startswith(u"#"):
+            dados[chave] = row[1].strip()
 
     _CACHE = dados
     return dados
